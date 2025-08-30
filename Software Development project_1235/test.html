@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unit Test - opentab()</title>
+  <style>
+    .active-link { font-weight: bold; color: green; }
+    .active-tab { display: block; }
+    .tab-contents { display: none; }
+  </style>
+</head>
+<body>
+  <h2>opentab() Function Unit Test</h2>
+  <div id="results"></div>
+
+  
+  <p class="tab-links active-link" id="skills-link" onclick="opentab('skills')">Skills</p>
+  <p class="tab-links" id="experience-link" onclick="opentab('experience')">Experience</p>
+
+  <div class="tab-contents active-tab" id="skills">Skills Content</div>
+  <div class="tab-contents" id="experience">Experience Content</div>
+
+  
+  <script>
+    var tablinks = document.getElementsByClassName("tab-links");
+    var tabcontents = document.getElementsByClassName("tab-contents");
+
+    function opentab(tabname) {
+      for (let tablink of tablinks) {
+        tablink.classList.remove("active-link");
+      }
+      for (let tabcontent of tabcontents) {
+        tabcontent.classList.remove("active-tab");
+      }
+      event.currentTarget.classList.add("active-link");
+      document.getElementById(tabname).classList.add("active-tab");
+    }
+  </script>
+
+  
+  <script>
+    function simulateClick(element, callback) {
+      const evt = new MouseEvent("click", { bubbles: true });
+      element.addEventListener("click", callback);
+      element.dispatchEvent(evt);
+    }
+
+    function testOpentabFunction() {
+      const resultDiv = document.getElementById("results");
+      const skillsLink = document.getElementById("skills-link");
+      const experienceLink = document.getElementById("experience-link");
+      const skillsTab = document.getElementById("skills");
+      const experienceTab = document.getElementById("experience");
+
+      simulateClick(experienceLink, function () {
+        opentab("experience");
+
+        const test1 = experienceLink.classList.contains("active-link");
+        const test2 = experienceTab.classList.contains("active-tab");
+        const test3 = !skillsTab.classList.contains("active-tab");
+
+        if (test1 && test2 && test3) {
+          resultDiv.innerHTML = "<p style='color:green;'>✅ opentab() Test Passed</p>";
+        } else {
+          resultDiv.innerHTML = "<p style='color:red;'>❌ opentab() Test Failed</p>";
+        }
+      });
+    }
+
+    window.onload = testOpentabFunction;
+  </script>
+</body>
+</html>
